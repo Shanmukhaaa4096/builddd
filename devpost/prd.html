@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShikshaGap PRD Companion</title>
+  <style>
+    :root {
+      --bg: #EEF4D4;
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --text: #1C2826;
+      --text-muted: #4b5563;
+      --correct: #DAEFB3;
+      --wrong: #EA9E8D;
+      --accent-red: #D64550;
+      --primary-dark: #1C2826;
+      --banner-bg: #1C2826;
+      --banner-text: #EEF4D4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 2px solid rgba(28, 40, 38, 0.15);
+      padding-bottom: 1.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--primary-dark);
+      color: var(--banner-text);
+      margin-bottom: 0.75rem;
+    }
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+    .tagline {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(28, 40, 38, 0.06);
+    }
+    .card h2 {
+      font-size: 1.35rem;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    /* Visual UI Preview Box */
+    .ui-preview {
+      border: 2px dashed #94a3b8;
+      border-radius: 12px;
+      padding: 1.5rem;
+      background: #fafaf7;
+      margin-top: 1rem;
+    }
+    .mock-banner {
+      background: var(--banner-bg);
+      color: var(--banner-text);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .mock-option {
+      border: 2px solid #cbd5e1;
+      padding: 0.9rem 1.2rem;
+      border-radius: 10px;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+    }
+    .mock-option.correct {
+      background: var(--correct);
+      border-color: #84cc16;
+      color: var(--primary-dark);
+    }
+    .mock-option.wrong {
+      background: var(--wrong);
+      border-color: var(--accent-red);
+      color: var(--primary-dark);
+    }
+    .btn {
+      background: var(--primary-dark);
+      color: var(--banner-text);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-block;
+    }
+    /* State Machine SVG */
+    .diagram-container {
+      background: #ffffff;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      box-shadow: 0 4px 12px rgba(28, 40, 38, 0.06);
+    }
+    svg { display: block; margin: 0 auto; max-width: 100%; height: auto; }
+
+    /* Testable Sequences Tabs */
+    .test-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .test-tab-btn {
+      background: #e2e8f0;
+      border: 1px solid #cbd5e1;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--primary-dark);
+    }
+    .test-tab-btn.active {
+      background: var(--primary-dark);
+      color: var(--banner-text);
+      border-color: var(--primary-dark);
+    }
+    .test-pane {
+      display: none;
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+    }
+    .test-pane.active { display: block; }
+    .step-log {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .step-log li {
+      padding: 0.6rem 0.9rem;
+      border-radius: 6px;
+      background: #f8fafc;
+      font-size: 0.9rem;
+      border-left: 4px solid #cbd5e1;
+    }
+    .step-log li.q-pass { border-left-color: #84cc16; }
+    .step-log li.q-fail { border-left-color: var(--accent-red); }
+    .result-callout {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 1rem;
+      color: #166534;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .info-tag {
+      display: inline-block;
+      background: rgba(28, 40, 38, 0.08);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #15803d; border: 1px solid #16a34a;">Product Requirements · Approved</span>
+      <h1>ShikshaGap — Product Definition</h1>
+      <p class="tagline">Standardized strings, mathematical rigor rules, and 7 verifiable acceptance sequences.</p>
+    </header>
+
+    <!-- Standardized Strings Callout -->
+    <div class="card" style="border-left: 4px solid var(--primary-dark);">
+      <h2>📋 Standardized Diagnostic Output Strings</h2>
+      <p>All UI views, PRD specifications, code logic, and tests strictly match these exact string literals:</p>
+      <div style="margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <code>"Your gap is multiplication facts."</code>
+        <code>"Your gap is equivalent fractions."</code>
+        <code>"Your gap is adding unlike fractions."</code>
+        <code>"No foundational gap found, you're ready for unlike fractions!"</code>
+      </div>
+    </div>
+
+    <!-- Visual Look and Feel Preview -->
+    <div class="card">
+      <h2>🎨 UI Look and Feel Preview (Mathematical Rigor Check)</h2>
+      <p>Progress label updated to <strong>"Question 3"</strong> (no "of 6"). Option B fixed to mathematically incorrect distractor <strong>2/3</strong> so only <strong>2/4</strong> is correct.</p>
+      
+      <div class="ui-preview">
+        <!-- Mock Step-Back Banner -->
+        <div class="mock-banner">
+          <span>🔍</span> Checking an earlier concept: Equivalent Fractions
+        </div>
+
+        <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">QUESTION 3</p>
+        <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Which fraction is equivalent to 1/2?</h3>
+
+        <div class="mock-option">
+          <span>A) 2/5</span>
+          <span></span>
+        </div>
+        <div class="mock-option wrong">
+          <span>B) 2/3  (Student Choice)</span>
+          <span style="color: var(--accent-red); font-weight: bold;">✕ Not quite.</span>
+        </div>
+        <div class="mock-option correct">
+          <span>C) 2/4  (Correct Answer)</span>
+          <span style="color: #4d7c0f; font-weight: bold;">✓ Correct!</span>
+        </div>
+        <div class="mock-option">
+          <span>D) 1/3</span>
+          <span></span>
+        </div>
+
+        <div style="margin-top: 1.25rem; display: flex; justify-content: flex-end;">
+          <button class="btn">Next Question →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagnostic State Machine Logic Diagram -->
+    <div class="diagram-container">
+      <h2 style="font-size: 1.35rem; color: var(--primary-dark); margin-bottom: 1rem;">🔄 State Machine & Slip-Protection Architecture</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        <em>Deliberate Choice:</em> Only the Level 1 multiplication check gets a confirmation question to keep the maximum run at 6 questions. A single miss at Level 3 or Level 2 is taken at face value.
+      </p>
+      <svg viewBox="0 0 850 420" width="100%" height="420" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#1C2826" />
+          </marker>
+          <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#16a34a" />
+          </marker>
+          <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+          </marker>
+        </defs>
+
+        <!-- Start Node -->
+        <rect x="20" y="50" width="120" height="50" rx="8" fill="#1C2826" />
+        <text x="80" y="80" fill="#EEF4D4" font-size="12" font-weight="bold" text-anchor="middle">Start Screen</text>
+
+        <path d="M 140 75 L 185 75" stroke="#1C2826" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- Level 3 Medium -->
+        <rect x="190" y="50" width="140" height="50" rx="8" fill="#fff" stroke="#1C2826" stroke-width="2"/>
+        <text x="260" y="72" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">Q1: L3 (Medium)</text>
+        <text x="260" y="88" fill="#64748b" font-size="10" text-anchor="middle">Unlike Fractions</text>
+
+        <!-- L3 Medium -> L3 Harder (Correct) -->
+        <path d="M 330 75 L 395 75" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <text x="360" y="65" fill="#16a34a" font-size="10" font-weight="bold" text-anchor="middle">Pass</text>
+
+        <!-- Level 3 Harder -->
+        <rect x="400" y="50" width="140" height="50" rx="8" fill="#fff" stroke="#1C2826" stroke-width="2"/>
+        <text x="470" y="72" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">L3 (Harder)</text>
+        <text x="470" y="88" fill="#64748b" font-size="10" text-anchor="middle">Unlike Fractions</text>
+
+        <!-- L3 Harder -> L3 Hardest (Correct) -->
+        <path d="M 540 75 L 605 75" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <text x="570" y="65" fill="#16a34a" font-size="10" font-weight="bold" text-anchor="middle">Pass</text>
+
+        <!-- Level 3 Hardest -->
+        <rect x="610" y="50" width="130" height="50" rx="8" fill="#fff" stroke="#1C2826" stroke-width="2"/>
+        <text x="675" y="72" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">L3 (Hardest)</text>
+        <text x="675" y="88" fill="#64748b" font-size="10" text-anchor="middle">Unlike Fractions</text>
+
+        <!-- Mastery Exit -->
+        <path d="M 740 75 L 785 75" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <rect x="790" y="50" width="55" height="50" rx="8" fill="#DAEFB3" stroke="#16a34a" stroke-width="2"/>
+        <text x="817" y="75" fill="#1C2826" font-size="9" font-weight="bold" text-anchor="middle">No gap</text>
+        <text x="817" y="88" fill="#1C2826" font-size="8" text-anchor="middle">found!</text>
+
+        <!-- L3 Miss -> Step down to L2 Equivalent Fractions -->
+        <path d="M 260 100 L 260 170 L 395 170" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <path d="M 470 100 L 470 170" stroke="#dc2626" stroke-width="2"/>
+        <path d="M 675 100 L 675 170 L 555 170" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <text x="310" y="160" fill="#dc2626" font-size="10" font-weight="bold">Miss L3 ↳ Step back</text>
+
+        <!-- Level 2 Equivalent Fractions -->
+        <rect x="400" y="145" width="150" height="55" rx="8" fill="#fff" stroke="#D64550" stroke-width="2"/>
+        <text x="475" y="168" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">Level 2 (Equiv. Frac.)</text>
+        <text x="475" y="185" fill="#64748b" font-size="9" text-anchor="middle">Banner: "Checking earlier..."</text>
+
+        <!-- L2 Correct -> Gap is Level 3 (Solid foundation) -->
+        <path d="M 550 170 L 640 170" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <rect x="645" y="145" width="195" height="55" rx="8" fill="#DAEFB3" stroke="#16a34a" stroke-width="2"/>
+        <text x="742" y="168" fill="#1C2826" font-size="10" font-weight="bold" text-anchor="middle">"Your gap is adding</text>
+        <text x="742" y="185" fill="#1C2826" font-size="10" font-weight="bold" text-anchor="middle">unlike fractions."</text>
+
+        <!-- L2 Miss -> Step down to L1 Multiplication -->
+        <path d="M 475 200 L 475 265" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <text x="480" y="235" fill="#dc2626" font-size="10" font-weight="bold">Miss L2 ↳ Step back</text>
+
+        <!-- Level 1 Multiplication (Q1) -->
+        <rect x="400" y="270" width="150" height="55" rx="8" fill="#fff" stroke="#D64550" stroke-width="2"/>
+        <text x="475" y="293" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">Level 1: Mult. Q1</text>
+        <text x="475" y="310" fill="#64748b" font-size="9" text-anchor="middle">Banner: "Checking earlier..."</text>
+
+        <!-- L1 Correct -> Gap is Level 2 (Equivalent Fractions) -->
+        <path d="M 550 295 L 640 295" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <rect x="645" y="270" width="195" height="55" rx="8" fill="#EA9E8D" stroke="#D64550" stroke-width="2"/>
+        <text x="742" y="293" fill="#1C2826" font-size="10" font-weight="bold" text-anchor="middle">"Your gap is equivalent</text>
+        <text x="742" y="310" fill="#1C2826" font-size="10" font-weight="bold" text-anchor="middle">fractions."</text>
+
+        <!-- L1 Miss -> Confirmation Q2 (Slip protection rule) -->
+        <path d="M 475 325 L 475 365 L 340 365" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <text x="395" y="355" fill="#dc2626" font-size="9" font-weight="bold">Miss ↳ Slip Check</text>
+
+        <!-- Level 1 Multiplication (Q2 Confirm) -->
+        <rect x="180" y="340" width="155" height="55" rx="8" fill="#fff" stroke="#D64550" stroke-width="2"/>
+        <text x="257" y="363" fill="#1C2826" font-size="11" font-weight="bold" text-anchor="middle">Level 1: Mult. Q2 (Confirm)</text>
+        <text x="257" y="380" fill="#64748b" font-size="9" text-anchor="middle">NO step-back banner</text>
+
+        <!-- L1 Q2 Correct -> Slip recovered -> Gap is L2 -->
+        <path d="M 257 395 L 257 410 L 742 410 L 742 330" stroke="#16a34a" stroke-width="2" marker-end="url(#arrow-green)"/>
+        <text x="500" y="405" fill="#16a34a" font-size="9" font-weight="bold">Slip Recovered → "Your gap is equivalent fractions."</text>
+
+        <!-- L1 Q2 Miss -> Deep gap confirmed -> Gap is L1 Multiplication Facts -->
+        <path d="M 180 365 L 125 365" stroke="#dc2626" stroke-width="2" marker-end="url(#arrow-red)"/>
+        <rect x="5" y="340" width="115" height="55" rx="8" fill="#EA9E8D" stroke="#D64550" stroke-width="2"/>
+        <text x="62" y="363" fill="#1C2826" font-size="9" font-weight="bold" text-anchor="middle">"Your gap is</text>
+        <text x="62" y="380" fill="#1C2826" font-size="9" font-weight="bold" text-anchor="middle">multiplication facts."</text>
+      </svg>
+    </div>
+
+    <!-- Interactive Testable Sequences Explorer -->
+    <div class="card">
+      <h2>🧪 7 Verifiable Acceptance Test Sequences</h2>
+      <p style="margin-bottom: 1rem;">Click any sequence to inspect the exact test path, branching triggers, and standardized verdict strings.</p>
+
+      <div class="test-tabs">
+        <button class="test-tab-btn active" onclick="showSequence(1, this)">Seq 1: Demo</button>
+        <button class="test-tab-btn" onclick="showSequence(2, this)">Seq 2: Mult. Gap</button>
+        <button class="test-tab-btn" onclick="showSequence(3, this)">Seq 3: Slip Recovery</button>
+        <button class="test-tab-btn" onclick="showSequence(4, this)">Seq 4: Direct L3</button>
+        <button class="test-tab-btn" onclick="showSequence(5, this)">Seq 5: Mastery</button>
+        <button class="test-tab-btn" onclick="showSequence(6, this)">Seq 6: Restart</button>
+        <button class="test-tab-btn" onclick="showSequence(7, this)">Seq 7: 6-Question Cap</button>
+      </div>
+
+      <!-- Seq 1 -->
+      <div id="seq-1" class="test-pane active">
+        <ul class="step-log">
+          <li class="q-pass"><strong>Q1: Level 3 Medium</strong> → Answer Correct ✓ (Progresses difficulty to Q2 Harder)</li>
+          <li class="q-fail"><strong>Q2: Level 3 Harder</strong> → Answer Wrong ✗ (Triggers step-back banner: "Checking an earlier concept: Equivalent Fractions")</li>
+          <li class="q-fail"><strong>Q3: Level 2 Equivalent Fractions</strong> → Answer Wrong ✗ (Triggers second step-back banner: "Checking an earlier concept: Multiplication Facts")</li>
+          <li class="q-pass"><strong>Q4: Level 1 Multiplication Facts</strong> → Answer Correct ✓ (Base foundation confirmed solid)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends at 4 questions.<br>
+          Declares: <code>"Your gap is equivalent fractions."</code><br>
+          Rationale: <em>"You got multiplication facts right but missed equivalent fractions, so that is where to start."</em>
+        </div>
+      </div>
+
+      <!-- Seq 2 -->
+      <div id="seq-2" class="test-pane">
+        <ul class="step-log">
+          <li class="q-fail"><strong>Q1: Level 3 Medium</strong> → Answer Wrong ✗ (Step back to L2 with banner)</li>
+          <li class="q-fail"><strong>Q2: Level 2 Equivalent Fractions</strong> → Answer Wrong ✗ (Step back to L1 with banner)</li>
+          <li class="q-fail"><strong>Q3: Level 1 Multiplication (Q1)</strong> → Answer Wrong ✗ (Triggers confirmation check, NO banner)</li>
+          <li class="q-fail"><strong>Q4: Level 1 Multiplication (Q2)</strong> → Answer Wrong ✗ (Confirms deep gap)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends at 4 questions.<br>
+          Declares: <code>"Your gap is multiplication facts."</code><br>
+          Rationale: <em>"Multiplication facts are the foundation for equivalent fractions and common denominators. Start here to make fractions easier."</em>
+        </div>
+      </div>
+
+      <!-- Seq 3 -->
+      <div id="seq-3" class="test-pane">
+        <ul class="step-log">
+          <li class="q-fail"><strong>Q1: Level 3 Medium</strong> → Answer Wrong ✗ (Step back to L2 with banner)</li>
+          <li class="q-fail"><strong>Q2: Level 2 Equivalent Fractions</strong> → Answer Wrong ✗ (Step back to L1 with banner)</li>
+          <li class="q-fail"><strong>Q3: Level 1 Multiplication (Q1)</strong> → Answer Wrong ✗ (Triggers confirmation check, NO banner)</li>
+          <li class="q-pass"><strong>Q4: Level 1 Multiplication (Q2)</strong> → Answer Correct ✓ (Slip recovered; counts as mastered)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends at 4 questions.<br>
+          Declares: <code>"Your gap is equivalent fractions."</code><br>
+          Rationale: <em>"Multiplication facts are solid, but equivalent fractions need practice."</em>
+        </div>
+      </div>
+
+      <!-- Seq 4 -->
+      <div id="seq-4" class="test-pane">
+        <ul class="step-log">
+          <li class="q-fail"><strong>Q1: Level 3 Medium</strong> → Answer Wrong ✗ (Step back to L2 with banner)</li>
+          <li class="q-pass"><strong>Q2: Level 2 Equivalent Fractions</strong> → Answer Correct ✓ (Confirms prerequisite foundation is solid)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends early at 2 questions!<br>
+          Declares: <code>"Your gap is adding unlike fractions."</code><br>
+          Rationale: <em>"Your prerequisite skills (equivalent fractions and multiplication) are solid! You just need practice with the final step of adding numerators over common denominators."</em>
+        </div>
+      </div>
+
+      <!-- Seq 5 -->
+      <div id="seq-5" class="test-pane">
+        <ul class="step-log">
+          <li class="q-pass"><strong>Q1: Level 3 Medium</strong> → Answer Correct ✓ (Advance to Harder)</li>
+          <li class="q-pass"><strong>Q2: Level 3 Harder</strong> → Answer Correct ✓ (Advance to Hardest)</li>
+          <li class="q-pass"><strong>Q3: Level 3 Hardest</strong> → Answer Correct ✓ (All 3 difficulty tiers mastered)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends cleanly at 3 questions. Step-back banner NEVER appears.<br>
+          Declares: <code>"No foundational gap found, you're ready for unlike fractions!"</code>
+        </div>
+      </div>
+
+      <!-- Seq 6 -->
+      <div id="seq-6" class="test-pane">
+        <ul class="step-log">
+          <li><strong>Step 1:</strong> Complete any quiz run to reach the Result Screen.</li>
+          <li><strong>Step 2:</strong> Tap the "Try Again" button.</li>
+          <li><strong>Step 3:</strong> State resets in-memory immediately without page refresh.</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Starts fresh at Question 1. Answer positions reshuffled (verified that correct answers are not locked in position A).
+        </div>
+      </div>
+
+      <!-- Seq 7 -->
+      <div id="seq-7" class="test-pane">
+        <ul class="step-log">
+          <li class="q-pass"><strong>Q1: Level 3 Medium</strong> → Answer Correct ✓ (Advance to Harder)</li>
+          <li class="q-pass"><strong>Q2: Level 3 Harder</strong> → Answer Correct ✓ (Advance to Hardest)</li>
+          <li class="q-fail"><strong>Q3: Level 3 Hardest</strong> → Answer Wrong ✗ (Step back to L2 with banner)</li>
+          <li class="q-fail"><strong>Q4: Level 2 Equivalent Fractions</strong> → Answer Wrong ✗ (Step back to L1 with banner)</li>
+          <li class="q-fail"><strong>Q5: Level 1 Multiplication (Q1)</strong> → Answer Wrong ✗ (Triggers confirmation check, NO banner)</li>
+          <li class="q-fail"><strong>Q6: Level 1 Multiplication (Q2)</strong> → Answer Wrong ✗ (6th question reached; confirms deep gap)</li>
+        </ul>
+        <div class="result-callout">
+          <strong>Expected Verdict:</strong> Ends at exactly 6 questions. It never asks a 7th question.<br>
+          Declares: <code>"Your gap is multiplication facts."</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showSequence(num, btn) {
+      document.querySelectorAll('.test-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.test-pane').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('seq-' + num).classList.add('active');
+    }
+  </script>
+</body>
+</html>
