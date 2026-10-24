@@ -2,6 +2,8 @@
 
 A diagnostic math assessment for Class 5 students that pinpoints foundational prerequisite gaps instead of just grading right or wrong.
 
+> **Note:** This is a brand-new codebase written completely from scratch in this repository for this hackathon, with no code reused from earlier projects.
+
 When students struggle with adding unlike fractions, **ShikshaGap** dynamically steps back to test whether the underlying issue stems from **equivalent fractions** or **multiplication facts recall**.
 
 ## Features
