@@ -4,7 +4,9 @@ A diagnostic math assessment for Class 5 students that pinpoints foundational pr
 
 > **Note:** This is a brand-new codebase written completely from scratch in this repository for this hackathon, with no code reused from earlier projects.
 
-When students struggle with adding unlike fractions, **ShikshaGap** dynamically steps back to test whether the underlying issue stems from **equivalent fractions** or **multiplication facts recall**.
+## What It Is & Who It Is For
+
+**ShikshaGap** is designed for **Class 5 students** learning fraction addition. When a student struggles with adding unlike fractions, rather than simply scoring the answer wrong, the assessment dynamically steps back to diagnose whether the root difficulty lies in **equivalent fractions** or **multiplication facts recall**.
 
 ## Features
 
@@ -53,3 +55,7 @@ The project was built using a spec-driven, test-first workflow:
 - [Technical Specification](devpost/spec.md) / [Spec Companion HTML](devpost/spec.html)
 - [Build Checklist](devpost/checklist.md)
 - [Code Tour & App Map](devpost/app-map.html)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
