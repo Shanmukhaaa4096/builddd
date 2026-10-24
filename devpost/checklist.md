@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. Scaffold project, question bank, and mathematical data validation tests**
+- [x] **1. Scaffold project, question bank, and mathematical data validation tests**
   Becomes usable: A runnable Vite + React + TypeScript project with the curated 12-question math bank in `src/data/questions.ts` and automated mathematical data validation tests passing via Vitest.
   Why now: Bootstraps the tooling and verifies the mathematical integrity of all 12 questions (correct values, distractors, minimum per level) before the diagnostic engine uses them.
   PRD ref: `prd.md > Features and Behavior` (Question Bank and Prerequisite Chain)
