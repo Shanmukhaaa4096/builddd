@@ -41,24 +41,25 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — Slice 2 (pure diagnostic engine and test sequence outputs)
-- [ ] Final kick-the-tires exploration and feedback completed — Slice 3 (interactive browser app)
+- [x] Early usable behavior explored — Slice 2 (pure diagnostic engine and test sequence outputs verified via automated tests)
+- [x] Final kick-the-tires exploration and feedback completed — Slice 3 (interactive browser app tested by learner across all 5 key sequences)
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Rename package to shikshagap-poc — verified in package.json, tests and build pass
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — focused alternative and project-grounded recap connecting acceptance tests to anti-false-positive practice
+- [x] Optional edit and transfer reflection addressed — package name updated to shikshagap-poc; transfer reflection offered
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: [to be filled upon completion]
-Route and stops: [to be filled upon completion]
-Edit outcome: [to be filled upon completion]
-Reflection: [to be filled upon completion]
-Activity mode: [to be filled upon completion]
+Activity and evidence: Focused alternative connecting learner's stated goal (avoiding agent false-positives) to the pure diagnostic engine with injected rng, semantic answer helpers, recursive invariant tree walking (INVAR-1 & INVAR-2), and mathematical data validation. All 17 Vitest tests passing.
+Route and stops: src/data/questions.ts (12 verified math questions with correctValue), src/engine/diagnosticEngine.ts (pure state machine and Fisher-Yates shuffler), and src/components/ (accessible views and audit trail).
+Edit outcome: Kept. Renamed package from "shikshagap" to "shikshagap-poc" in package.json; verified with clean npm test and npm run build.
+Reflection: Offered transfer question regarding how to define testable boundaries to avoid false positives with coding agents.
+Activity mode: Live app and editor with standalone devpost/app-map.html reference guide.
 
 ## Revisions
 
