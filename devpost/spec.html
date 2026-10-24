@@ -157,9 +157,9 @@
 <body>
   <div class="container">
     <header>
-      <span class="badge">Technical Specification · Draft</span>
+      <span class="badge" style="background:#166534; color:#DAEFB3;">Technical Specification · Approved</span>
       <h1>ShikshaGap — Technical Blueprint</h1>
-      <p class="tagline">Pure-function diagnostic engine, decision table, 9 sequence tests, and zero external services.</p>
+      <p class="tagline">Pure-function diagnostic engine, decision table, 9 sequence tests, longest path, and mathematical data validation.</p>
     </header>
 
     <div class="highlight-card">
@@ -479,22 +479,46 @@
               <td>Banner true only on L3→L2 or L2→L1; false on Q1, false on L1 confirmation, false on mastery</td>
             </tr>
             <tr>
-              <td><strong>BANK-1</strong></td>
-              <td>Rigor Check</td>
-              <td><code>should verify all questions have exactly 1 correct answer and mathematical distractors</code></td>
-              <td>All 10 questions have single correct option, distractors mathematically incorrect</td>
+              <td><strong>DATA-VAL-1</strong></td>
+              <td>Bank Validation</td>
+              <td><code>should verify each question has exactly 1 correct option and correctValue matches option value</code></td>
+              <td>Asserts exactly 1 isCorrect: true per question, matching stored correctValue.</td>
             </tr>
             <tr>
-              <td><strong>BANK-2</strong></td>
-              <td>Bank Size & No Repeats</td>
-              <td><code>should verify per-level minimums, distinct prompts, different L1 products, and no question repeats across seeded runs</code></td>
-              <td>Asserts ≥4 L3, ≥3 L2, ≥3 L1; distinct prompts; distinct L1 products; no question repeats across seeded runs.</td>
+              <td><strong>DATA-VAL-2</strong></td>
+              <td>Bank Validation</td>
+              <td><code>should verify no duplicate options exist within any question</code></td>
+              <td>Asserts 4 distinct values and display texts for all 12 questions.</td>
             </tr>
             <tr>
-              <td><strong>SHUF-1</strong></td>
-              <td>Shuffled Options</td>
-              <td><code>should randomize option positions without corrupting correct answer id</code></td>
-              <td>Multiple shuffles yield varied order; correct flag intact</td>
+              <td><strong>DATA-VAL-3</strong></td>
+              <td>Bank Validation</td>
+              <td><code>should verify stored answer values match real mathematical solutions</code></td>
+              <td>Evaluates fraction addition and multiplication facts against stored correctValue.</td>
+            </tr>
+            <tr>
+              <td><strong>DATA-VAL-4</strong></td>
+              <td>Bank Validation</td>
+              <td><code>should verify question bank has at least 4 questions per level and 12-15 total</code></td>
+              <td>Asserts ≥4 questions each for L1, L2, L3, total 12-15 questions.</td>
+            </tr>
+            <tr>
+              <td><strong>SHUF-POS</strong></td>
+              <td>Option Shuffling</td>
+              <td><code>should verify correct answer appears across all 4 positions over multiple shuffles</code></td>
+              <td>Asserts indices 0, 1, 2, 3 all hold the correct answer across multiple seeded shuffles.</td>
+            </tr>
+            <tr>
+              <td><strong>INVAR-1</strong></td>
+              <td>Invariant Check</td>
+              <td><code>should guarantee no run ever exceeds 6 questions across all branch paths</code></td>
+              <td>Exhaustive branching test confirms termination at ≤6 questions.</td>
+            </tr>
+            <tr>
+              <td><strong>INVAR-2</strong></td>
+              <td>Invariant Check</td>
+              <td><code>should guarantee no run ever repeats a question in its audit trail</code></td>
+              <td>Confirms strictly unique askedQuestionIds across every possible path.</td>
             </tr>
             <tr>
               <td><strong>UI-E2E</strong></td>
