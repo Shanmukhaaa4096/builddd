@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Run `npm test` and inspect `src/data/questions.ts` to see all 12 questions and their verified mathematical values passing.
   Commit: `Scaffold project and verify 12-question bank with data validation tests`
 
-- [ ] **2. Pure diagnostic engine with dynamic shuffling and acceptance test suite**
+- [x] **2. Pure diagnostic engine with dynamic shuffling and acceptance test suite**
   Becomes usable: The complete diagnostic state machine module in `src/engine/diagnosticEngine.ts` tested and proven against all 9 PRD acceptance sequences, the longest path, option position spread, and engine invariants.
   Why now: The unique kernel of ShikshaGap is its diagnostic logic. Building and proving it with pure unit tests before touching UI code prevents false positives and guarantees the diagnostic algorithm works.
   PRD ref: `prd.md > Features and Behavior` (The Core Diagnostic Engine), `prd.md > Testable Acceptance Sequences` (Sequences 1 through 9)
