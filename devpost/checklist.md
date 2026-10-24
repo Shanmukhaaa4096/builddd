@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Run `npm test` and review the passing sequence reports showing exact banner flags and standardized gap verdicts.
   Commit: `Implement pure diagnostic engine with dynamic shuffling and acceptance test suite`
 
-- [ ] **3. Accessible interactive UI and full-app integration**
+- [x] **3. Accessible interactive UI and full-app integration**
   Becomes usable: A responsive web app running at `http://localhost:5173` allowing a student to start the quiz, answer questions with immediate click-locking and dual visual/text feedback, see step-back banners, view results with an audit trail, and restart cleanly.
   Why now: Connects the verified pure engine to the user interface, delivering the full student-facing experience with the Coolors design system.
   PRD ref: `prd.md > The Core Journey`, `prd.md > Look and Feel`
